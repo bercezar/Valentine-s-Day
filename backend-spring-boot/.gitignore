@@ -1,0 +1,43 @@
+# IDEs e Ferramentas de Desenvolvimento
+.idea/
+.vscode/
+*.iml
+/backend-spring-boot/.classpath
+/backend-spring-boot/.project
+/backend-spring-boot/.settings/
+/backend-spring-boot/pom.xml.tag
+/backend-spring-boot/pom.xml.releaseBackup
+/backend-spring-boot/pom.xml.versionsBackup
+/backend-spring-boot/release.properties
+/backend-spring-boot/rebel.xml
+/backend-spring-boot/hs_err_pid*.log
+
+# Dependências do Maven
+/backend-spring-boot/target/
+
+# Logs
+*.log
+logs/
+*/logs/
+
+# Arquivos de Dados e Bancos de Dados
+*.sqlite
+*.mv.db
+*.trace.db
+/backend-spring-boot/database/
+
+# Arquivos de Uploads
+/backend-spring-boot/uploads/
+
+# Variáveis de Ambiente e Configurações Sensíveis
+.env
+.env.*
+*.properties
+
+# IDE-specific / OS-specific files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.npm/
+node_modules/
+npm-debug.log*
