@@ -3,28 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - dia dos namordos</title>
+    <title>Login - Presente Especial!</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="container landing-page">
-      <h1>É dia dos namorados BB!</h1>
-      <p>Para acessar, digite o nome do seu espaço e o código &hearts</p>
+      <h1>Bem-vindo!</h1>
+      <h3>Faça login para acessar:</h3>
       <div class="input-group">
         <input
           type="email"
-          id="inputEmail"
-          placeholder="Seu email aqui..."
+          id="inputEmailLogin"
+          placeholder="Seu e-mail..."
           required
         />
         <input
           type="text"
-          id="inputAccessCode"
+          id="inputAccessCodeLogin"
           placeholder="Código secreto..."
           required
         />
-        <button id="btnAcessar">Acessar</button>
+        <button id="btnLogin">
+          <span class="buttonContent">Acessar</span>
+        </button>
       </div>
+
+      <p>Ainda não tem conta? Esqueceu o código?</p>
+      <button id="btnIrParaRegistro" class="link-button">
+        <span class="buttonContent">Regristre-se</span>
+      </button>
+      <button id="btnIrParaGerarToken" class="link-button">
+        <span class="buttonContent">Gerar Token</span>
+      </button>
       <p id="mensagemErro" class="erro"></p>
     </div>
 
