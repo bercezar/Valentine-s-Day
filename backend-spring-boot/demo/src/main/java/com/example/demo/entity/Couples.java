@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.lang.annotation.Inherited;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -35,5 +36,11 @@ public class Couples{
 
     @Column(nullable = true)
     private LocalDate anniversaryDate;
+
+    @Column(nullable = true)
+    private String accessCode;
+
+    @Column(nullable = true)
+    private LocalDateTime accessCodeExpiration;
 
 }
