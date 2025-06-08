@@ -3,15 +3,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputAccessCodeLogin = document.getElementById("inputAccessCodeLogin");
   const btnLogin = document.getElementById("btnLogin");
   const btnIrParaRegistro = document.getElementById("btnIrParaRegistro");
-  const btnIrParaGerarToken = document.getElementById("btnIrParaGerarToken"); // NOVO BOTÃO
+  const btnIrParaGerarToken = document.getElementById("btnIrParaGerarToken");
   const mensagemErro = document.getElementById("mensagemErro");
   const container = document.querySelector(".container");
 
   const API_BASE_URL = "http://localhost:8080/api/couples";
 
-  // --- Lógica para o Login ---
   btnLogin.addEventListener("click", async () => {
-    const emailInput = inputEmailLogin.value.trim();
+    const emailInput = inputEmailLogin.value.trim(); // Agora é o e-mail
     const accessCodeInput = inputAccessCodeLogin.value.trim();
 
     if (!emailInput || !accessCodeInput) {
@@ -67,17 +66,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // --- Lógica para Ir para Registro ---
   btnIrParaRegistro.addEventListener("click", () => {
     window.location.href = "../registro-page/index.html";
   });
 
-  // --- Lógica para Ir para Gerar Token (NOVO) ---
   btnIrParaGerarToken.addEventListener("click", () => {
-    window.location.href = "../gerar-token-page/index.html"; // Redireciona para a nova página
+    window.location.href = "../gerar-token-page/index.html";
   });
 
-  // --- Event Listeners para 'Enter' ---
   inputEmailLogin.addEventListener("keypress", (event) => {
     if (event.key === "Enter") btnLogin.click();
   });

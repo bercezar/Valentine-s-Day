@@ -1,4 +1,4 @@
-package main.java.com.example.demo.controller;
+package com.example.demo.controller;
 
 import com.example.demo.dto.CoupleRequestDTO;
 import com.example.demo.dto.CoupleResponseDTO;
@@ -14,7 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @RestController
 @RequestMapping("/api/couples")
-@CrossOrigin(origins = "*") // Para desenvolvimento. EM PRODUÇÃO: restrinja a origens específicas
+@CrossOrigin(origins = "*")
 public class CoupleController {
 
     @Autowired
@@ -30,19 +30,17 @@ public class CoupleController {
         }
     }
 
-    // Endpoint de login MÁGICO
-    // Recebe o email e o código de acesso
     @GetMapping("/login")
-    public ResponseEntity<CoupleResponseDTO> login(@RequestParam String email, @RequestParam String accessCode) { // Parâmetros alterados
+    public ResponseEntity<CoupleResponseDTO> login(@RequestParam String email, @RequestParam String accessCode) {
         try {
             CoupleResponseDTO response = coupleService.authenticateAndGetCouple(email, accessCode);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             String errorMessage = e.getMessage();
             if (errorMessage.contains("expirado")) {
-                return ResponseEntity.status(HttpStatus.GONE).body(null); // 410 Gone
+                return ResponseEntity.status(HttpStatus.GONE).body(null);
             } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); // 401 Unauthorized
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
             }
         }
     }
@@ -69,9 +67,8 @@ public class CoupleController {
         }
     }
 
-    // Endpoint para regerar o código de acesso (parâmetro alterado para email)
     @PatchMapping("/{email}/generate-access-code")
-    public ResponseEntity<CoupleResponseDTO> generateAccessCode(@PathVariable String email, @RequestParam String newAccessCode) { // Parâmetro alterado
+    public ResponseEntity<CoupleResponseDTO> generateAccessCode(@PathVariable String email, @RequestParam String newAccessCode) {
         try {
             CoupleResponseDTO response = coupleService.generateAndSetAccessCode(email, newAccessCode);
             return ResponseEntity.ok(response);

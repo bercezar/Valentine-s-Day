@@ -1,5 +1,4 @@
-// src/main/java/com/example/demo/service/CoupleService.java
-package main.java.com.example.demo.service;
+package com.example.demo.service;
 
 import com.example.demo.dto.CoupleRequestDTO;
 import com.example.demo.dto.CoupleResponseDTO;
@@ -16,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import java.util.regex.Pattern; 
 
 @Service
 public class CoupleService {
@@ -27,10 +27,14 @@ public class CoupleService {
 
     private final String UPLOAD_DIR = "uploads/";
 
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+
+
     public CoupleResponseDTO convertToResponseDTO(Couple couple) {
         CoupleResponseDTO dto = new CoupleResponseDTO();
         dto.setPersonalName(couple.getPersonalName());
-        dto.setUserName(couple.getUserName()); // Mantido para o response, mesmo que não seja o login principal
+        dto.setEmail(couple.getEmail());
         dto.setPhotoUrl(couple.getPhotoUrl() != null ? "/uploads/" + couple.getPhotoUrl() : null);
         dto.setAnniversaryDate(couple.getAnniversaryDate());
         dto.setAccessCode(couple.getAccessCode());
@@ -39,20 +43,25 @@ public class CoupleService {
     }
 
     public CoupleResponseDTO registerCouple(CoupleRequestDTO requestDTO) {
-        // Agora, você pode querer verificar se o email já existe também
-        if (coupleRepository.findByUserName(requestDTO.getUserName()).isPresent()) {
-            throw new RuntimeException("Nome de usuário já existe. Por favor, escolha outro.");
+        if (requestDTO.getEmail() == null || !EMAIL_PATTERN.matcher(requestDTO.getEmail()).matches()) {
+            throw new RuntimeException("Formato de e-mail inválido. Por favor, use um e-mail válido (ex: nome@dominio.com).");
         }
-        if (requestDTO.getEmail() != null && coupleRepository.findByEmail(requestDTO.getEmail()).isPresent()) {
-            throw new RuntimeException("Este e-mail já está em uso.");
+        
+        // Validação de unicidade de e-mail
+        if (coupleRepository.findByEmail(requestDTO.getEmail()).isPresent()) {
+            throw new RuntimeException("Este e-mail já está em uso para outra conta.");
+        }
+
+        // Validação de Senha (mínimo de 8 caracteres)
+        if (requestDTO.getPassword() == null || requestDTO.getPassword().length() < 8) {
+            throw new RuntimeException("A senha deve ter no mínimo 8 caracteres.");
         }
 
         Couple couple = new Couple();
         couple.setPersonalName(requestDTO.getPersonalName());
-        couple.setUserName(requestDTO.getUserName());
+        couple.setEmail(requestDTO.getEmail());
         couple.setPartnerName(requestDTO.getPartnerName());
         couple.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
-        couple.setEmail(requestDTO.getEmail());
         couple.setAnniversaryDate(requestDTO.getAnniversaryDate());
         
         couple.setAccessCode(UUID.randomUUID().toString().substring(0, 8).toUpperCase());
@@ -62,9 +71,13 @@ public class CoupleService {
         return convertToResponseDTO(couple);
     }
 
-    // authenticateAndGetCouple: AGORA VALIDA email E accessCode
     public CoupleResponseDTO authenticateAndGetCouple(String email, String accessCode) {
-        Couple couple = coupleRepository.findByEmail(email) // Busca por email
+        // Validação de E-mail (para login também)
+        if (email == null || !EMAIL_PATTERN.matcher(email).matches()) {
+            throw new RuntimeException("Formato de e-mail inválido.");
+        }
+
+        Couple couple = coupleRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("E-mail ou código de acesso incorretos."));
 
         if (!couple.getAccessCode().equalsIgnoreCase(accessCode.trim())) {
@@ -108,9 +121,16 @@ public class CoupleService {
         return convertToResponseDTO(couple);
     }
 
-    // generateAndSetAccessCode: Você pode querer que este método receba email agora
-    public CoupleResponseDTO generateAndSetAccessCode(String email, String newAccessCode) { // Parâmetro alterado para email
-        Couple couple = coupleRepository.findByEmail(email) // Busca por email
+    public CoupleResponseDTO generateAndSetAccessCode(String email, String newAccessCode) {
+        // Validação de E-mail (para geração de código também)
+        if (email == null || !EMAIL_PATTERN.matcher(email).matches()) {
+            throw new RuntimeException("Formato de e-mail inválido.");
+        }
+        if (newAccessCode == null || newAccessCode.length() < 5) { // Novo token pode ter um tamanho mínimo (ex: 5)
+            throw new RuntimeException("O novo código de acesso deve ter no mínimo 5 caracteres.");
+        }
+
+        Couple couple = coupleRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Casal não encontrado para o e-mail: " + email));
         
         couple.setAccessCode(newAccessCode.trim());

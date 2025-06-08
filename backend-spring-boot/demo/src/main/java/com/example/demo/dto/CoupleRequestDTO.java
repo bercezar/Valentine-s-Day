@@ -1,4 +1,4 @@
-package main.java.com.example.demo.dto; 
+package com.example.demo.dto;
 
 import lombok.Data;
 import java.time.LocalDate;
@@ -6,9 +6,9 @@ import java.time.LocalDate;
 @Data
 public class CoupleRequestDTO {
     private String personalName;
-    private String userName;
+    private String email; 
     private String partnerName;
     private String password;
-    private String email;
     private LocalDate anniversaryDate;
+
 }

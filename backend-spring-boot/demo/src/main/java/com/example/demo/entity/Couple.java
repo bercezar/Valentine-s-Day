@@ -1,17 +1,15 @@
-package main.java.com.example.demo.entity;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.lang.annotation.Inherited;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name="couples")
+@Table(name = "couples")
+public class Couple {
 
-public class Couples{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,16 +18,13 @@ public class Couples{
     private String personalName;
 
     @Column(nullable = false, unique = true)
-    private String userName;
+    private String email; 
 
     @Column(nullable = false)
     private String partnerName;
 
     @Column(nullable = false)
     private String password;
-
-    @Column(nullable = true)
-    private String email;
 
     @Column(nullable = true)
     private String photoUrl;
