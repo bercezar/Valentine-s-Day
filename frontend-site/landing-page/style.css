@@ -20,6 +20,8 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
 .container {
@@ -41,7 +43,7 @@ input {
 }
 
 h1 {
-  font-family: Brush Script MT, Brush Script Std, cursive;
+  font-family: "Brush Script MT", "Brush Script Std", cursive;
   font-size: 60px;
 }
 h3,
@@ -112,11 +114,6 @@ p {
   p {
     font-size: 15px; /* Reduz tamanho do parágrafo/h3 */
     margin-bottom: 20px;
-  }
-
-  .input-group {
-    gap: 10px; /* Diminui o espaçamento entre inputs */
-    margin-bottom: 15px;
   }
 
   input {

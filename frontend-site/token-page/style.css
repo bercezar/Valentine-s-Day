@@ -1,95 +1,101 @@
-/* Este arquivo será similar ao style.css da landing-page, mas com cores e talvez layout específicos. */
-
-/* Exemplo (copiado e adaptado do landing-page/style.css) */
 body {
-  font-family: "Arial", sans-serif;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   margin: 0;
-  background-color: #f0f0f0;
-  color: #333;
   overflow: hidden;
-}
-
-.container {
-  background-color: #fff;
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 90%;
-  max-width: 500px;
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-h1 {
-  color: #ffc107; /* Amarelo/Laranja para 'gerar token' */
-  margin-bottom: 20px;
-}
-
-p {
-  margin-bottom: 25px;
-  line-height: 1.6;
+  background: #9350bf;
+  background: linear-gradient(
+    90deg,
+    rgba(147, 80, 191, 1) 11%,
+    rgba(161, 77, 77, 1) 51%,
+    rgba(168, 131, 79, 1) 100%
+  );
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 15px;
   margin-bottom: 20px;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="email"],
-input[type="date"] {
-  padding: 12px 15px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  font-size: 1em;
-  outline: none;
-  transition: border-color 0.3s ease;
+.container {
+  padding: 4%;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="email"]:focus,
-input[type="date"]:focus {
-  border-color: #ffc107; /* Cor de foco */
+input {
+  padding: 5px;
+  margin: 5px;
+  min-width: 35vh;
 }
 
-button {
-  padding: 12px 25px;
-  background-color: #ffc107; /* Cor do botão */
-  color: white;
+h1 {
+  font-family: "Brush Script MT", "Brush Script Std", cursive;
+  font-size: 60px;
+}
+h3,
+p {
+  font-family: monospace;
+  font-size: 15px;
+}
+
+#btnGenerateToken,
+#btnVoltarLogin.link-button {
+  position: relative;
+  overflow: hidden;
+  height: 3rem;
+  padding: 0 2rem;
+  border-radius: 1.5rem;
+  background: #3d3a4e;
+  background-size: 400%;
+  color: #fff;
   border: none;
-  border-radius: 8px;
-  font-size: 1.1em;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 60%;
+  max-width: 250px;
+  margin-top: 15px;
 }
 
-button:hover {
-  background-color: #ffb300;
-  transform: translateY(-2px);
+#btnGenerateToken:hover::before,
+#btnVoltarLogin.link-button:hover::before {
+  transform: scaleX(1);
 }
 
-.link-button {
-  background: none;
-  border: none;
-  color: #673ab7; /* Cor do link */
-  cursor: pointer;
-  text-decoration: underline;
-  font-size: 0.9em;
-  margin-top: 10px;
+.buttonContent {
+  position: relative;
+  z-index: 1;
 }
-.link-button:hover {
-  color: #512da8;
-  text-decoration: none;
+
+#btnGenerateToken::before,
+#btnVoltarLogin.link-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  width: 100%;
+  height: inherit;
+  border-radius: inherit;
+  background: linear-gradient(
+    82.3deg,
+    rgba(150, 93, 233, 1) 10.8%,
+    rgba(99, 88, 238, 1) 94.3%
+  );
+  transition: all 0.475s;
 }
 
 .erro {
@@ -97,25 +103,102 @@ button:hover {
   margin-top: 10px;
   font-weight: bold;
   display: none;
+  font-size: 15px;
 }
 
 .info {
-  /* Estilo para a mensagem do token gerado */
   color: #4caf50;
   margin-top: 15px;
   font-weight: bold;
   display: none;
   word-break: break-all;
-  font-size: 0.95em;
+  font-size: 15px;
 }
 
-/* Estilos específicos para a página de gerar token */
-.gerar-token-page {
-  background-color: #fffde7; /* Um amarelo muito suave */
+.token-page {
+  background-color: transparent;
 }
 
-/* --- CLASSES PARA ANIMAÇÃO DE TRANSIÇÃO --- */
-.fade-out {
-  opacity: 0;
-  transform: translateY(-50px);
+.token-page button {
+  background-color: #ffc107;
+}
+.token-page button:hover {
+  background-color: #ffb300;
+}
+.token-page .link-button {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  text-decoration: underline;
+}
+.token-page .link-button:hover {
+  color: #ddd;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 30px 20px;
+    max-width: 95%;
+  }
+
+  h1 {
+    font-size: 45px;
+    margin-bottom: 20px;
+  }
+
+  h3,
+  p {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  input {
+    min-width: unset;
+    width: 50%;
+    padding: 10px;
+    margin: 5px auto;
+  }
+
+  #btnGenerateToken,
+  #btnVoltarLogin.link-button {
+    padding: 12px 20px;
+    font-size: 0.8em;
+    width: 30%;
+    max-width: unset;
+    height: 2.5rem;
+  }
+
+  .erro,
+  .info {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 25px 15px;
+    border-radius: 10px;
+  }
+
+  h1 {
+    font-size: 35px;
+  }
+
+  h3,
+  p {
+    font-size: 13px;
+  }
+
+  input {
+    width: 50%;
+    padding: 4px;
+  }
+
+  #btnGenerateToken,
+  #btnVoltarLogin.link-button {
+    padding: 10px 18px;
+    font-size: 1em;
+    height: 2.2rem;
+  }
 }

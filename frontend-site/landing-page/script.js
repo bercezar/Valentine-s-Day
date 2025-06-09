@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const API_BASE_URL = "http://localhost:8080/api/couples";
 
   btnLogin.addEventListener("click", async () => {
-    const emailInput = inputEmailLogin.value.trim(); // Agora é o e-mail
+    const emailInput = inputEmailLogin.value.trim();
     const accessCodeInput = inputAccessCodeLogin.value.trim();
 
     if (!emailInput || !accessCodeInput) {
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   btnIrParaGerarToken.addEventListener("click", () => {
-    window.location.href = "../gerar-token-page/index.html";
+    window.location.href = "../token-page/index.html";
   });
 
   inputEmailLogin.addEventListener("keypress", (event) => {

@@ -3,16 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gerar Código Secreto - Presente Especial!</title>
+    <title>Gerar Token - Presente Especial!</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <div class="container gerar-token-page">
-      <h1>Gerar/Recuperar Código Secreto</h1>
-      <p>
-        Informe seu e-mail de cadastro e sua senha para gerar um novo código de
-        acesso:
-      </p>
+    <div class="container token-page">
+      <h1>Token</h1>
+      <h3>
+        Informe seu e-mail de cadastro e o nome do parceiro para gerar um novo
+        código de acesso:
+      </h3>
       <div class="input-group">
         <input
           type="email"
@@ -26,14 +30,18 @@
           placeholder="Sua senha..."
           required
         />
-        <button id="btnGenerateToken">Gerar Novo Código</button>
+        <button id="btnGenerateToken">
+          <span class="buttonContent">Gerar Novo Código</span>
+        </button>
       </div>
       <p id="mensagemTokenGerado" class="info"></p>
-      <p>
-        Voltar para o
-        <button id="btnVoltarLogin" class="link-button">Login</button>
-      </p>
       <p id="mensagemErroGenerate" class="erro"></p>
+
+      <p style="margin-top: 20px">
+        <button id="btnVoltarLogin" class="link-button">
+          <span class="buttonContent">Voltar para Login</span>
+        </button>
+      </p>
     </div>
 
     <script src="script.js"></script>

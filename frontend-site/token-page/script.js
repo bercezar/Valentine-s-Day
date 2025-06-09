@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
     "inputPasswordGenerate"
   );
   const btnGenerateToken = document.getElementById("btnGenerateToken");
-  const btnVoltarLogin = document.getElementById("btnVoltarLogin"); // Botão para voltar
+  const btnVoltarLogin = document.getElementById("btnVoltarLogin");
   const mensagemTokenGerado = document.getElementById("mensagemTokenGerado");
-  const mensagemErroGenerate = document.getElementById("mensagemErroGenerate"); // Mensagem de erro para esta página
+  const mensagemErroGenerate = document.getElementById("mensagemErroGenerate");
   const container = document.querySelector(".container");
 
   const API_BASE_URL = "http://localhost:8080/api/couples";
@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
       mensagemErroGenerate.textContent =
         "Por favor, preencha seu e-mail e sua senha.";
       mensagemErroGenerate.style.display = "block";
+      mensagemTokenGerado.style.display = "none";
       setTimeout(() => {
         mensagemErroGenerate.style.display = "none";
       }, 3000);
@@ -34,22 +35,24 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       if (!authResponse.ok) {
-        mensagemErroGenerate.textContent =
-          "E-mail ou senha de cadastro incorretos.";
+        const errorData = await authResponse.json().catch(() => ({}));
+        let errorMessage = `E-mail ou senha de cadastro incorretos.`;
+        if (errorData && errorData.message) {
+          errorMessage = errorData.message;
+        }
+        mensagemErroGenerate.textContent = errorMessage;
         mensagemErroGenerate.style.display = "block";
+        mensagemTokenGerado.style.display = "none";
         setTimeout(() => {
           mensagemErroGenerate.style.display = "none";
         }, 3000);
         return;
       }
 
-      // Se autenticado, chama o endpoint para gerar novo access code (PATCH)
-      // Note: O endpoint generate-access-code no backend espera @PathVariable email e @RequestParam newAccessCode
-      // Vamos gerar um novo UUID para o accessCode aqui para o PATCH
-      const newAccessCode = Math.random()
-        .toString(36)
+      const newAccessCode = UUID.randomUUID()
+        .toString()
         .substring(2, 10)
-        .toUpperCase(); // Gera um código aleatório simples
+        .toUpperCase();
 
       const generateResponse = await fetch(
         `${API_BASE_URL}/${encodeURIComponent(
@@ -58,9 +61,9 @@ document.addEventListener("DOMContentLoaded", () => {
           newAccessCode
         )}`,
         {
-          method: "PATCH", // Usamos PATCH para atualizar uma parte do recurso
+          method: "PATCH",
           headers: {
-            "Content-Type": "application/json", // Não tem body, mas bom indicar
+            "Content-Type": "application/json",
           },
         }
       );
@@ -78,11 +81,14 @@ document.addEventListener("DOMContentLoaded", () => {
         inputEmailGenerate.value = "";
         inputPasswordGenerate.value = "";
       } else {
-        const errorData = await generateResponse.json();
+        const errorData = await generateResponse.json().catch(() => ({}));
         mensagemErroGenerate.textContent = `Erro ao gerar código: ${
-          errorData.message || "Erro no servidor."
+          errorData.message ||
+          generateResponse.statusText ||
+          "Erro no servidor."
         }`;
         mensagemErroGenerate.style.display = "block";
+        mensagemTokenGerado.style.display = "none";
         setTimeout(() => {
           mensagemErroGenerate.style.display = "none";
         }, 5000);
@@ -92,18 +98,17 @@ document.addEventListener("DOMContentLoaded", () => {
       mensagemErroGenerate.textContent =
         "Problema de conexão. Tente novamente mais tarde.";
       mensagemErroGenerate.style.display = "block";
+      mensagemTokenGerado.style.display = "none";
       setTimeout(() => {
         mensagemErroGenerate.style.display = "none";
       }, 3000);
     }
   });
 
-  // Lógica para voltar para o login
   btnVoltarLogin.addEventListener("click", () => {
     window.location.href = "../landing-page/index.html";
   });
 
-  // Event Listeners para 'Enter'
   inputEmailGenerate.addEventListener("keypress", (event) => {
     if (event.key === "Enter") btnGenerateToken.click();
   });
