@@ -26,7 +26,7 @@ public class Couple {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = true)
+    @Column(nullable = true, length = 2000) 
     private String photoUrl;
 
     @Column(nullable = true)

@@ -21,7 +21,6 @@ body {
   justify-content: center;
   align-items: center;
   gap: 15px;
-  margin-bottom: 10px;
 }
 
 .container {
@@ -37,9 +36,9 @@ body {
 }
 
 input {
-  padding: 5px;
+  padding: 8px;
   margin: 5px;
-  min-width: 35vh;
+  min-width: 25%;
 }
 
 h1 {
@@ -126,6 +125,17 @@ p {
   color: #ddd;
   text-decoration: none;
 }
+.register-page .btnVoltarLogin {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  text-decoration: underline;
+}
+
+.register-page .btnVoltarLogin button:hover {
+  color: #ddd;
+  text-decoration: none;
+}
 
 @media screen and (max-width: 768px) {
   .container {
@@ -182,7 +192,7 @@ p {
   }
 
   input {
-    width: 50%;
+    width: 95%;
     padding: 4px;
   }
 

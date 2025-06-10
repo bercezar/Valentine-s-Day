@@ -13,9 +13,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import java.util.regex.Pattern; 
+import java.util.regex.Pattern;
+import java.util.stream.Collectors; 
 
 @Service
 public class CoupleService {
@@ -42,20 +46,25 @@ public class CoupleService {
         return dto;
     }
 
-    public CoupleResponseDTO registerCouple(CoupleRequestDTO requestDTO) {
-        if (requestDTO.getEmail() == null || !EMAIL_PATTERN.matcher(requestDTO.getEmail()).matches()) {
+    public CoupleResponseDTO registerCouple(CoupleRequestDTO requestDTO, List<MultipartFile> files) throws IOException {
+
+        if (requestDTO.getEmail() == null || !isValidEmailFormat(requestDTO.getEmail())) {
             throw new RuntimeException("Formato de e-mail inválido. Por favor, use um e-mail válido (ex: nome@dominio.com).");
         }
-        
-
         if (coupleRepository.findByEmail(requestDTO.getEmail()).isPresent()) {
             throw new RuntimeException("Este e-mail já está em uso para outra conta.");
         }
-
         if (requestDTO.getPassword() == null || requestDTO.getPassword().length() < 8) {
             throw new RuntimeException("A senha deve ter no mínimo 8 caracteres.");
         }
 
+        if (files == null || files.isEmpty()) {
+            throw new RuntimeException("Por favor, selecione entre 3 e 6 fotos para o registro.");
+        }
+        if (files.size() < 3 || files.size() > 6) {
+            throw new RuntimeException("Para o registro, por favor, selecione entre 3 e 6 fotos (você selecionou " + files.size() + ").");
+        }
+        
         Couple couple = new Couple();
         couple.setPersonalName(requestDTO.getPersonalName());
         couple.setEmail(requestDTO.getEmail());
@@ -66,9 +75,27 @@ public class CoupleService {
         couple.setAccessCode(UUID.randomUUID().toString().substring(0, 8).toUpperCase());
         couple.setAccessCodeExpiration(LocalDateTime.now().plusHours(6));
 
+        List<String> photoFileNames = new ArrayList<>();
+        Path uploadPath = Paths.get(UPLOAD_DIR);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        for (MultipartFile file : files) {
+            if (file.isEmpty()) {
+                throw new RuntimeException("Um dos arquivos de foto selecionados está vazio.");
+            }
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(file.getInputStream(), filePath);
+            photoFileNames.add(fileName);
+        }
+        couple.setPhotoUrl(photoFileNames.stream().collect(Collectors.joining(","))); 
+
         coupleRepository.save(couple);
         return convertToResponseDTO(couple);
     }
+
 
     public CoupleResponseDTO authenticateAndGetCouple(String email, String accessCode) {
         if (email == null || !EMAIL_PATTERN.matcher(email).matches()) {
@@ -92,20 +119,49 @@ public class CoupleService {
         return convertToResponseDTO(couple);
     }
 
-    public CoupleResponseDTO uploadPhoto(Long coupleId, MultipartFile file) throws IOException {
+    public CoupleResponseDTO uploadPhoto(Long coupleId, List<MultipartFile> files) throws IOException {
         Couple couple = coupleRepository.findById(coupleId)
                 .orElseThrow(() -> new RuntimeException("Casal não encontrado."));
+
+        if (files == null || files.isEmpty()) {
+            throw new RuntimeException("Nenhum arquivo de foto selecionado. Selecione entre 3 e 10 fotos.");
+        }
+        if (files.size() < 3 || files.size() > 10) { 
+            throw new RuntimeException("Por favor, selecione entre 3 e 10 fotos para substituir as existentes.");
+        }
 
         Path uploadPath = Paths.get(UPLOAD_DIR);
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
+        
+        List<String> oldPhotoNames = new ArrayList<>();
+        if (couple.getPhotoUrl() != null && !couple.getPhotoUrl().isEmpty()) {
+            oldPhotoNames = new ArrayList<>(Arrays.asList(couple.getPhotoUrl().split(",")));
+        }
+        
+        for (String oldFileName : oldPhotoNames) {
+            if (oldFileName != null && !oldFileName.isEmpty()) {
+                Path oldFilePath = uploadPath.resolve(oldFileName.trim());
+                try {
+                    Files.deleteIfExists(oldFilePath);
+                    System.out.println("Foto antiga removida: " + oldFilePath.toString());
+                } catch (IOException e) {
+                    System.err.println("Erro ao remover foto antiga: " + e.getMessage());
+                }
+            }
+        }
 
-        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-        Path filePath = uploadPath.resolve(fileName);
-        Files.copy(file.getInputStream(), filePath);
-
-        couple.setPhotoUrl(fileName);
+        List<String> newPhotoNames = new ArrayList<>();
+        for (MultipartFile file : files) {
+            if (file.isEmpty()) throw new RuntimeException("Um dos arquivos de foto selecionados está vazio.");
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(file.getInputStream(), filePath);
+            newPhotoNames.add(fileName);
+        }
+        
+        couple.setPhotoUrl(newPhotoNames.stream().collect(Collectors.joining(",")));
         coupleRepository.save(couple);
 
         return convertToResponseDTO(couple);

@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   btnIrParaRegistro.addEventListener("click", () => {
-    window.location.href = "../registro-page/index.html";
+    window.location.href = "../register-page/index.html";
   });
 
   btnIrParaGerarToken.addEventListener("click", () => {

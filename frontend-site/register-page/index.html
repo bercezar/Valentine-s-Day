@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro - Presente Especial!</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container register-page">
+      <h1>Crie Sua Conta!</h1>
+      <h3>Preencha os dados para registrar seu espaço e adicione fotos:</h3>
+      <div class="input-group">
+        <input
+          type="text"
+          id="inputPersonalName"
+          placeholder="Seu nome completo..."
+          required
+        />
+        <input
+          type="email"
+          id="inputEmail"
+          placeholder="Seu e-mail..."
+          required
+        />
+        <input
+          type="text"
+          id="inputPartnerName"
+          placeholder="Nome do seu amor..."
+          required
+        />
+        <input
+          type="password"
+          id="inputPassword"
+          placeholder="Crie sua senha..."
+          required
+        />
+        <p style="color: white">Data do relacionamento:</p>
+        <input type="date" id="inputAnniversaryDate" required />
+
+        <p style="color: white">Selecione entre 3 e 6 fotos:</p>
+        <input
+          type="file"
+          id="inputPhotos"
+          accept="image/*"
+          multiple
+          required
+        />
+
+        <div id="previewPhotos" class="photo-preview-area"></div>
+
+        <button id="btnRegistrar">
+          <span class="buttonContent">Confirmar</span>
+        </button>
+      </div>
+      <p id="mensagemErroRegistro" class="erro"></p>
+
+      <p>
+        <button id="btnVoltarLogin" class="link-button">
+          <span class="buttonContent">Voltar para Login</span>
+        </button>
+      </p>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

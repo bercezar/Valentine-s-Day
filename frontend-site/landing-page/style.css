@@ -21,7 +21,6 @@ body {
   justify-content: center;
   align-items: center;
   gap: 15px;
-  margin-bottom: 10px;
 }
 
 .container {
@@ -37,9 +36,9 @@ body {
 }
 
 input {
-  padding: 5px;
+  padding: 8px;
   margin: 5px;
-  min-width: 35vh;
+  min-width: 25%;
 }
 
 h1 {

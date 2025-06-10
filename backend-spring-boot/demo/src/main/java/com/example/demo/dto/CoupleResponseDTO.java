@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class CoupleResponseDTO {
+    private Long id;
     private String personalName;
     private String email; 
     private String photoUrl;

@@ -37,9 +37,9 @@ body {
 }
 
 input {
-  padding: 5px;
+  padding: 8px;
   margin: 5px;
-  min-width: 35vh;
+  min-width: 25%;
 }
 
 h1 {

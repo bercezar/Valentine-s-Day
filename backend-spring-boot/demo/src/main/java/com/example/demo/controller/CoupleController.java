@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 @RestController
@@ -20,12 +22,14 @@ public class CoupleController {
     @Autowired
     private CoupleService coupleService;
 
-    @PostMapping("/register")
-    public ResponseEntity<CoupleResponseDTO> register(@RequestBody CoupleRequestDTO requestDTO) {
+    @PostMapping(value = "/register", consumes = {"multipart/form-data"})
+    public ResponseEntity<CoupleResponseDTO> register(
+            @RequestPart("request") CoupleRequestDTO requestDTO, 
+            @RequestParam("files") List<MultipartFile> files) { 
         try {
-            CoupleResponseDTO response = coupleService.registerCouple(requestDTO);
+            CoupleResponseDTO response = coupleService.registerCouple(requestDTO, files); // Passa a lista de files
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (RuntimeException e) {
+        } catch (RuntimeException | IOException e) { 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
@@ -45,13 +49,22 @@ public class CoupleController {
         }
     }
 
-    @PostMapping("/{coupleId}/upload-photo")
-    public ResponseEntity<CoupleResponseDTO> uploadPhoto(@PathVariable Long coupleId, @RequestParam("file") MultipartFile file) {
+    @PostMapping(value = "/{coupleId}/upload-photo", consumes = {"multipart/form-data"}) 
+    public ResponseEntity<CoupleResponseDTO> uploadPhoto(@PathVariable Long coupleId, 
+                                                        @RequestParam("files") List<MultipartFile> files) { 
         try {
-            CoupleResponseDTO response = coupleService.uploadPhoto(coupleId, file);
+            
+            if (files == null || files.isEmpty()) {
+                throw new RuntimeException("Nenhum arquivo de foto selecionado. Selecione entre 3 e 10 fotos.");
+            }
+            if (files.size() < 3 || files.size() > 10) { // Validação de 3 a 10 fotos
+                throw new RuntimeException("Por favor, selecione entre 3 e 10 fotos.");
+            }
+            
+            CoupleResponseDTO response = coupleService.uploadPhoto(coupleId, files);
             return ResponseEntity.ok(response);
         }
-        catch (RuntimeException | IOException e) {
+        catch (RuntimeException | IOException e) { 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
