@@ -8,6 +8,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const mensagemTokenGerado = document.getElementById("mensagemTokenGerado");
   const mensagemErroGenerate = document.getElementById("mensagemErroGenerate");
   const container = document.querySelector(".container");
+  const btnIrParaResetPassword = document.getElementById(
+    "btnIrParaResetPassword"
+  );
 
   const API_BASE_URL = "http://localhost:8080/api/couples";
 
@@ -107,6 +110,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   btnVoltarLogin.addEventListener("click", () => {
     window.location.href = "../landing-page/index.html";
+  });
+
+  btnIrParaResetPassword.addEventListener("click", () => {
+    window.location.href = "../reset-password-page/index.html";
   });
 
   inputEmailGenerate.addEventListener("keypress", (event) => {
