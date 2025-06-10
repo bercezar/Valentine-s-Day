@@ -47,12 +47,11 @@ public class CoupleService {
             throw new RuntimeException("Formato de e-mail inválido. Por favor, use um e-mail válido (ex: nome@dominio.com).");
         }
         
-        // Validação de unicidade de e-mail
+
         if (coupleRepository.findByEmail(requestDTO.getEmail()).isPresent()) {
             throw new RuntimeException("Este e-mail já está em uso para outra conta.");
         }
 
-        // Validação de Senha (mínimo de 8 caracteres)
         if (requestDTO.getPassword() == null || requestDTO.getPassword().length() < 8) {
             throw new RuntimeException("A senha deve ter no mínimo 8 caracteres.");
         }
@@ -72,7 +71,6 @@ public class CoupleService {
     }
 
     public CoupleResponseDTO authenticateAndGetCouple(String email, String accessCode) {
-        // Validação de E-mail (para login também)
         if (email == null || !EMAIL_PATTERN.matcher(email).matches()) {
             throw new RuntimeException("Formato de e-mail inválido.");
         }
@@ -122,11 +120,11 @@ public class CoupleService {
     }
 
     public CoupleResponseDTO generateAndSetAccessCode(String email, String newAccessCode) {
-        // Validação de E-mail (para geração de código também)
+
         if (email == null || !EMAIL_PATTERN.matcher(email).matches()) {
             throw new RuntimeException("Formato de e-mail inválido.");
         }
-        if (newAccessCode == null || newAccessCode.length() < 5) { // Novo token pode ter um tamanho mínimo (ex: 5)
+        if (newAccessCode == null || newAccessCode.length() < 5) { 
             throw new RuntimeException("O novo código de acesso deve ter no mínimo 5 caracteres.");
         }
 
@@ -137,5 +135,30 @@ public class CoupleService {
         couple.setAccessCodeExpiration(LocalDateTime.now().plusHours(6));
         coupleRepository.save(couple);
         return convertToResponseDTO(couple);
+    }
+
+    public CoupleResponseDTO resetPassword(String email, String partnerName, String newPassword) {
+        if (email == null || !isValidEmailFormat(email)) {
+            throw new RuntimeException("Formato de e-mail inválido.");
+        }
+        if (newPassword == null || newPassword.length() < 8) {
+            throw new RuntimeException("A nova senha deve ter no mínimo 8 caracteres.");
+        }
+
+        Couple couple = coupleRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("E-mail ou nome do parceiro incorretos."));
+
+        if (!couple.getPartnerName().equalsIgnoreCase(partnerName.trim())) {
+            throw new RuntimeException("E-mail ou nome do parceiro incorretos.");
+        }
+
+        couple.setPassword(passwordEncoder.encode(newPassword));
+        coupleRepository.save(couple);
+
+        return convertToResponseDTO(couple);
+    }
+
+    private boolean isValidEmailFormat(String email) {
+        return EMAIL_PATTERN.matcher(email).matches();
     }
 }
