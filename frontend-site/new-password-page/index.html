@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redefinir Senha - Presente Especial!</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container new-password-page">
+      <h1>Redefinir Sua Senha</h1>
+      <h3>Informe os dados a seguir:</h3>
+      <div class="input-group">
+        <input
+          type="email"
+          id="inputEmailReset"
+          placeholder="Seu e-mail de cadastro..."
+          required
+        />
+        <input
+          type="text"
+          id="inputPartnerNameReset"
+          placeholder="Nome do seu amor..."
+          required
+        />
+        <input
+          type="password"
+          id="inputNewPassword"
+          placeholder="Sua nova senha (mín. 8 caracteres)..."
+          required
+        />
+        <button id="btnResetPassword">
+          <span class="buttonContent">Redefinir Senha</span>
+        </button>
+      </div>
+      <p id="mensagemResetStatus" class="info"></p>
+      <p id="mensagemErroReset" class="erro"></p>
+
+      <p>
+        <button id="btnVoltarTokenPage" class="link-button">
+          <span class="buttonContent">Gerar Código</span>
+        </button>
+      </p>
+      <p>
+        <button id="btnVoltarLogin" class="link-button">
+          <span class="buttonContent">Voltar para Login</span>
+        </button>
+      </p>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

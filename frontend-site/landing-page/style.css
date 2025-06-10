@@ -21,13 +21,13 @@ body {
   justify-content: center;
   align-items: center;
   gap: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .container {
   padding: 4%;
   width: 90%;
-  max-width: 500px;
+  max-width: auto;
   text-align: center;
   opacity: 1;
   transform: translateY(0);
@@ -44,14 +44,13 @@ input {
 
 h1 {
   font-family: "Brush Script MT", "Brush Script Std", cursive;
-  font-size: 60px;
+  font-size: 63px;
 }
 h3,
 p {
   font-family: monospace;
-  font-size: 15px;
+  font-size: 16px;
 }
-
 .link-button,
 #btnLogin {
   position: relative;
@@ -96,57 +95,70 @@ p {
   transition: all 0.475s;
 }
 
-/* --- Media Queries para Responsividade (Mobile First) --- */
+.erro {
+  color: white;
+  margin-top: 20px;
+  font-weight: bold;
+  display: none;
+  font-size: 15px;
+}
+
+.info {
+  color: #4caf50;
+  margin-top: 20px;
+  font-weight: bold;
+  display: none;
+  word-break: break-all;
+  font-size: 15px;
+}
 
 @media screen and (max-width: 768px) {
-  /* Ajustes para telas menores que 768px (tablets e smartphones) */
   .container {
-    padding: 30px 20px; /* Diminui o padding */
-    max-width: 95%; /* Ocupa mais largura da tela */
+    padding: 30px 20px;
+    max-width: 95%;
   }
 
   h1 {
-    font-size: 45px; /* Reduz tamanho do título */
+    font-size: 45px;
     margin-bottom: 20px;
   }
 
   h3,
   p {
-    font-size: 15px; /* Reduz tamanho do parágrafo/h3 */
+    font-size: 15px;
     margin-bottom: 20px;
   }
 
   input {
-    min-width: unset; /* Remove o min-width fixo */
-    width: 50%; /* Ajusta a largura para ser mais responsiva */
-    padding: 10px; /* Ajusta o padding */
-    margin: 5px auto; /* Centraliza inputs */
+    min-width: unset;
+    width: 50%;
+    padding: 10px;
+    margin: 5px auto;
   }
 
   .link-button,
   #btnLogin {
     padding: 12px 20px;
-    font-size: 0.8em; /* Tamanho da fonte relativo */
-    width: 30%; /* Ocupa mais largura do container */
-    max-width: unset; /* Remove limite de largura */
-    height: 2.5rem; /* Ajusta a altura do botão */
+    font-size: 0.8em;
+    width: 30%;
+    max-width: unset;
+    height: 2.5rem;
   }
 
   .erro,
   .info {
-    font-size: 14px; /* Ajusta o tamanho da fonte */
+    font-size: 14px;
   }
 }
 
 @media screen and (max-width: 480px) {
-  /* Ajustes mais finos para telas muito pequenas (smartphones pequenos) */
   .container {
     padding: 25px 15px;
     border-radius: 10px;
   }
 
   h1 {
-    font-size: 35px; /* Reduz ainda mais */
+    font-size: 35px;
   }
 
   h3,
@@ -155,7 +167,7 @@ p {
   }
 
   input {
-    width: 50%; /* Ocupa ainda mais largura */
+    width: 50%;
     padding: 4px;
   }
 

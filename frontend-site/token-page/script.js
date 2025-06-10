@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      // Chamada para o endpoint de login (para autenticar o presenteador)
       const authResponse = await fetch(
         `${API_BASE_URL}/login?email=${encodeURIComponent(
           emailGenerate
@@ -113,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   btnIrParaResetPassword.addEventListener("click", () => {
-    window.location.href = "../reset-password-page/index.html";
+    window.location.href = "../new-password-page/index.html";
   });
 
   inputEmailGenerate.addEventListener("keypress", (event) => {
